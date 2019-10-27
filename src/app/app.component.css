@@ -114,21 +114,37 @@ md-autocomplete{
 
 .slice--period-1,
 .slice--period-2,
+.slice--period-3,
+.slice--period-4,
+.slice--period-5,
+.slice--period-6,
 .slice--period-7,
-.slice--period-8 {
+.slice--period-19,
+.slice--period-20,
+.slice--period-21,
+.slice--period-22,
+.slice--period-23,
+.slice--period-24 {
 	background: linear-gradient(200deg, #6a8a98, #e8c37e);
 }
 
 
 
-.slice--period-6
+.slice--period-17,
+.slice--period-18
  {
 	background: linear-gradient(200deg, #8db7ca, #e8c37e);
 }
 
-.slice--period-5,
-.slice--period-3,
-.slice--period-4
+.slice--period-8,
+.slice--period-9,
+.slice--period-10,
+.slice--period-11,
+.slice--period-12,
+.slice--period-13,
+.slice--period-14,
+.slice--period-15,
+.slice--period-16
  {
 	background: linear-gradient(200deg, #a0cfe4, #e8c37e);
 }
@@ -168,6 +184,10 @@ md-autocomplete{
 
 .slice__data--air__mintemp{
 	color: #4682a58c;
+}
+
+.slice__data--temperature__little-desc{
+	font-size: .7em;
 }
 
 .slice__data--water {

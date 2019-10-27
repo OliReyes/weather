@@ -120,16 +120,21 @@
           <span class="slice__data slice__data--day">{{forecastDay.day}}</span>
           <span class="slice__data slice__data--date">{{forecastDay.date}}</span>
         </span>
+
+        <span class="slice__data slice__data--summary">
+          <span class="slice__data slice__data--day">{{forecastDay.summary}}</span>
+        </span>
         <!-- <small>{{forecastDay.weather.description}}</small> -->
         <!-- Rest of the parameters templates. -->
         <span class="slice__data slice__data--air">
           <svg class="icon icon--thermometer">
             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-thermometer"></use>
           </svg>
-          <span *ngIf="forecastDay.airTemp.length" class="slice__data slice__data--temperature">{{forecastDay.airTemp[1]}} {{forecastDay.units.temperature}}
-            <span class="slice__data--air__mintemp">{{forecastDay.airTemp[0]}} {{forecastDay.units.temperature}}</span>
+          <span *ngIf="forecastDay.airTemp.length" class="slice__data slice__data--temperature">{{forecastDay.airTemp[1]}} {{forecastDay.units.temperature}} <small class="slice__data--temperature__little-desc">max</small>
+            /
+            <span class="slice__data--air__mintemp">{{forecastDay.airTemp[0]}} {{forecastDay.units.temperature}} <small class="slice__data--temperature__little-desc">min</small></span>
           </span>
-          <span *ngIf="!forecastDay.airTemp.length" class="slice__data slice__data--temperature">{{forecastDay.airTemp}} {{forecastDay.units.temperature}}</span>
+          <span *ngIf="!forecastDay.airTemp.length" class="slice__data slice__data--temperature">{{forecastDay.airTemp}} {{forecastDay.units.temperature}} <small class="slice__data--temperature__little-desc">moment</small></span>
         </span>
         <span class="slice__data slice__data--rain">
           <svg class="icon icon--drop">

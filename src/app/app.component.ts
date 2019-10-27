@@ -21,11 +21,11 @@ export class AppComponent implements OnInit {
 
   loadCityWeather(lat :number, lon: number){
 
-    this.weatherService.getCityWeather(lat, lon).subscribe( ( { hourly: { data } } ) => {
+    this.weatherService.getCityWeather(lat, lon).subscribe( forecastRawData => {
 
-      this.cityWeather = this.weatherService.mapDays(data)
+      console.log(forecastRawData)
 
-      console.log(data)
+      this.cityWeather = this.weatherService.mapDays(forecastRawData.hourly.data)
 
     } )
 

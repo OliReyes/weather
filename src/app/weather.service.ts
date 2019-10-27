@@ -93,6 +93,7 @@ export class WeatherService {
      let firstDay = {
        'timeInterval': timeInterval,
        'state': { 'display' : 0, 'hourly' : [stateCode]},
+       'summary': hourForecast.summary,
        'day' : key === 0 ? 'Today' : days[localDate.getDay()],
        'date' : formatedDate,
        'air' : { 'display' : [], 'hourly' : [temperature]},
