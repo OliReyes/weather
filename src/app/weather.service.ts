@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams  } from '@angular/common/http';
+import { Injectable } from '@angular/core'
+import { HttpClient, HttpParams  } from '@angular/common/http'
 
 @Injectable({
   providedIn: 'root'
@@ -12,15 +12,19 @@ export class WeatherService {
 
   timeIntervals: number = 24
   cityForecast: Array<any> = []
+  language: string
 
-  getCityWeather(lat: number, lon: number){
+  getCityWeather(lat: number, lon: number, lang: string = 'en'){
+
+    this.language = lang
 
     const BASEURL = 'https://api.darksky.net/forecast'
     const PROXYCORS = 'https://cors-anywhere.herokuapp.com'
     const APIKEY = 'c7e919996d611be09f8ae915710226e8'
     const latlon = lat + ',' + lon
     let params = new HttpParams()
-    params = params.set('units', 'ca').set('extend', 'hourly')
+
+    params = params.set('units', 'ca').set('extend', 'hourly').set('lang', lang)
 
     return this.http.get( PROXYCORS + '/' + BASEURL + '/' + APIKEY + '/' + latlon, { params } )
 
@@ -31,6 +35,8 @@ export class WeatherService {
    * Creates an array with the forecast of the requested city divided in days represented as objects like you can see above.
    */
    preMapDays(forecastRawData: Array<any>){
+
+     this.cityForecast = []
 
      forecastRawData.forEach( (forecastPerCertainHours, key) => {
 
@@ -49,7 +55,7 @@ export class WeatherService {
        const windDirection: number = Math.round(forecastPerCertainHours.windBearing)
        const precipitation: number = Math.round(forecastPerCertainHours.precipProbability)
 
-       this.cityForecast.forEach( (forecastDay, key) => {
+       this.cityForecast.forEach( (forecastDay, key2) => {
 
          // If the hours interval forecast of a particular day exists, then keeps filling up.
          if(forecastDay['date'] === formatedDate) {
@@ -62,7 +68,7 @@ export class WeatherService {
          // If not, then creates a new one.
          }else if (forecastDay['date'] !== formatedDate) {
            // "cityForecast.length < 5" don't want to show more than 5 days forecast.
-           if(key === this.cityForecast.length - 1 && this.cityForecast.length < 5){
+           if(key2 === this.cityForecast.length - 1 && this.cityForecast.length < 5){
              this.createNewForecastDay(forecastPerCertainHours, key)
            }
          }
@@ -79,7 +85,27 @@ export class WeatherService {
    createNewForecastDay(hourForecast: any, key: number){
 
      // Prepares all values that will be shown in the forecast view.
-     const days: Array<string> = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
+
+     let days: Array<string>
+     let today: string
+
+     if( this.language === 'en' ){
+       days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
+       today = 'Today'
+     }
+     else if( this.language === 'es' ){
+       days = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado']
+       today = 'Hoy'
+     }
+     else if( this.language === 'fr' ){
+       days = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi']
+       today = 'Aujourd\'hui'
+     }
+     else if( this.language === 'ar' ){
+       days = ['السَّبْت', 'الجُمُعة', 'الخَميس', 'الأرْبِعاء', 'الثُّلاثاء', 'الاثْنين', 'الأحَد'].reverse()
+       today = 'اليوم'
+     }
+
      const localDate: Date = new Date(hourForecast.time * 1000)
      const initialSetHours: number = localDate.getHours()
      const timeInterval: number = this.getTimeInterval(initialSetHours)
@@ -95,7 +121,7 @@ export class WeatherService {
        'timeInterval': timeInterval,
        'state': { 'display' : 0, 'hourly' : [stateCode]},
        'summary': hourForecast.summary,
-       'day' : key === 0 ? 'Today' : days[localDate.getDay()],
+       'day' : key === 0 ? today : days[localDate.getDay()],
        'date' : formatedDate,
        'air' : { 'display' : [], 'hourly' : [temperature]},
        'windspeed' : { 'display' : 0, 'hourly' : [windSpeed]},

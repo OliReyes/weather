@@ -62,6 +62,19 @@
 <!-- Main container of the view of the whole interface. -->
 <main>
 
+  <header class="weather-header">
+
+    <mat-form-field class="weather-language">
+      <mat-label>Select language</mat-label>
+      <mat-select (selectionChange)="changeLanguage($event)">
+        <mat-option *ngFor="let language of languages" [value]="language.code">
+          {{language.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </header>
+
   <!-- Container of the forecast information and visuals. -->
   <div class="content content--graph">
 
