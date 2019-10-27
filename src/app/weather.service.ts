@@ -269,5 +269,100 @@ export class WeatherService {
 
    }
 
+   /**
+    * Returns the correspondant class name for the layout depending on the interval.
+    */
+   getTimeIntervalClass(timeInterval: number){
+
+     let timeIntervalClass: string
+
+     switch(timeInterval) {
+
+       case 24 : timeIntervalClass = 'slice__hover__sub--00'; break;
+       case 23 : timeIntervalClass = 'slice__hover__sub--01'; break;
+       case 22 : timeIntervalClass = 'slice__hover__sub--02'; break;
+       case 21 : timeIntervalClass = 'slice__hover__sub--03'; break;
+       case 20 : timeIntervalClass = 'slice__hover__sub--04'; break;
+       case 19 : timeIntervalClass = 'slice__hover__sub--05'; break;
+       case 18 : timeIntervalClass = 'slice__hover__sub--06'; break;
+       case 17 : timeIntervalClass = 'slice__hover__sub--07'; break;
+       case 16 : timeIntervalClass = 'slice__hover__sub--08'; break;
+       case 15 : timeIntervalClass = 'slice__hover__sub--09'; break;
+       case 14 : timeIntervalClass = 'slice__hover__sub--10'; break;
+       case 13 : timeIntervalClass = 'slice__hover__sub--11'; break;
+       case 12 : timeIntervalClass = 'slice__hover__sub--12'; break;
+       case 11 : timeIntervalClass = 'slice__hover__sub--13'; break;
+       case 10 : timeIntervalClass = 'slice__hover__sub--14'; break;
+       case 9 : timeIntervalClass = 'slice__hover__sub--15'; break;
+       case 8 : timeIntervalClass = 'slice__hover__sub--16'; break;
+       case 7 : timeIntervalClass = 'slice__hover__sub--17'; break;
+       case 6 : timeIntervalClass = 'slice__hover__sub--18'; break;
+       case 5 : timeIntervalClass = 'slice__hover__sub--19'; break;
+       case 4 : timeIntervalClass = 'slice__hover__sub--20'; break;
+       case 3 : timeIntervalClass = 'slice__hover__sub--21'; break;
+       case 2 : timeIntervalClass = 'slice__hover__sub--22'; break;
+       case 1 : timeIntervalClass = 'slice__hover__sub--23'; break;
+
+     }
+
+     return timeIntervalClass
+
+   }
+
+   /**
+    * Computes the time interval to show when hover a day forecast slice.
+    */
+   getTimePeriod(period: number, indivTimeInterval: number) {
+
+     const possibilites = this.getIntervalsPossibilities(timeIntervals)
+     const interval = 24/timeIntervals
+     const newPeriod = possibilites[indivTimeInterval - 1][period]
+     return newPeriod * interval + ':00 - ' + (newPeriod + 1) * interval + ':00'
+
+   }
+
+   /**
+    * Depending on the time of the day and interval returns all possible divisions in the slice.
+    */
+   getIntervalsPossibilities(interval: number){
+
+     let possibilites: array;
+     // EXAMPLE:
+     // var possibilites = [
+     //   [7],
+     //   [6,7],
+     //   [5,6,7],
+     //   [4,5,6,7],
+     //   [3,4,5,6,7],
+     //   [2,3,4,5,6,7,],
+     //   [1,2,3,4,5,6,7],
+     //   [0,1,2,3,4,5,6,7]
+     // ];
+
+     for(let i = 0;i <= interval - 1;++i){
+
+       possibilites.unshift( [] );
+
+       for(let i2 = i;i2 <= interval - 1;i2++){
+
+         possibilites[0].push(i2);
+
+       }
+
+     }
+
+     return possibilites
+
+   }
+
+   /**
+    * Returns the correspondant class name for a given period.
+    */
+   getPeriodClassname(timeperiod: number) {
+
+     return 'slice--period-' + (timeperiod + 1)
+
+   };
+
 
 }
