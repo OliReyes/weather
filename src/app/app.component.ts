@@ -23,12 +23,14 @@ export class AppComponent implements OnInit {
 
     this.weatherService.getCityWeather(lat, lon).subscribe( ( { hourly: { data } } ) => {
 
-      let cityWeather = this.weatherService.preMapDays(data)
-      this.weatherService.initMapDays(cityWeather)
+      console.log(data)
 
-      this.cityWeather = cityWeather
-
-      console.log(this.cityWeather)
+      // let cityWeather = this.weatherService.preMapDays(data)
+      // this.weatherService.initMapDays(cityWeather)
+      //
+      // this.cityWeather = cityWeather
+      //
+      // console.log(this.cityWeather)
 
     } )
 
