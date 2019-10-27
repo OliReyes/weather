@@ -1,0 +1,485 @@
+.hidden {
+	position: absolute;
+	overflow: hidden;
+	width: 0;
+	height: 0;
+	pointer-events: none;
+}
+
+main {
+	position: relative;
+	width: 100%;
+	height: 200vh;
+	transition: -webkit-transform 0.5s;
+	transition: transform 0.5s;
+}
+
+/* Icons */
+.icon {
+	display: block;
+	width: 1.5em;
+	height: 1.5em;
+	margin: 0 auto;
+	fill: currentColor;
+}
+
+.nodata-wrap h2,
+.nodata-wrap .icon.icon--nodata{
+	color: rgba(255,255,255,.4);
+}
+
+.nodata-wrap .icon.icon--nodata {
+	width: 16em;
+	height: 16em;
+	margin: 0 auto;
+}
+
+.nodata-wrap .icon.icon--spcarrow {
+	display: inline-block;
+	transform: rotate(35deg);
+}
+
+/* Header */
+.meteo-header {
+	position: relative;
+	z-index: 10000;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	-webkit-align-items: center;
+	-ms-flex-align: center;
+	align-items: center;
+	width: 100%;
+	padding: 0.8em 1.5em 3em 0;
+}
+
+.meteo-header__main {
+	display: inherit;
+	-webkit-align-items: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+
+md-autocomplete{
+	min-width: 250px;
+}
+
+/* Graph content */
+.content {
+	position: absolute;
+	top: 0;
+	left: 0;
+	overflow: hidden;
+	width: 100%;
+	height: 100vh;
+}
+
+/* No data */
+.nodata-wrap{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	text-align: center;
+}
+
+/* Slices */
+.slices {
+	position: absolute;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	width: 100%;
+	height: 100vh;
+}
+
+.slice {
+	position: relative;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-flex-direction: column;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	overflow: hidden;
+	width: calc(100vw / 5);
+	height: 100%;
+	padding: 5em 0 0 0;
+	pointer-events: none;
+	background: linear-gradient(200deg, #a0cfe4, #e8c37e);
+}
+
+.slice--period-1,
+.slice--period-2,
+.slice--period-7,
+.slice--period-8 {
+	background: linear-gradient(200deg, #6a8a98, #e8c37e);
+}
+
+
+
+.slice--period-6
+ {
+	background: linear-gradient(200deg, #8db7ca, #e8c37e);
+}
+
+.slice--period-5,
+.slice--period-3,
+.slice--period-4
+ {
+	background: linear-gradient(200deg, #a0cfe4, #e8c37e);
+}
+
+.slice__data {
+	font-size: 1.25vw;
+	line-height: 1.5;
+	position: relative;
+	z-index: 100;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	padding: 1em;
+}
+
+.slice__data .slice__data {
+	display: inline-block;
+	padding: 0 0.5em 0 0;
+	vertical-align: middle;
+	white-space: nowrap;
+}
+
+.slice__data--hidden {
+	opacity: 0;
+}
+
+.slice__data--dateday {
+	color: #4682a5;
+}
+
+.slice__data--air,
+.slice__data--wind,
+.slice__data--rain,
+.slice__data--water {
+	color: #4682a5;
+}
+
+.slice__data--air__mintemp{
+	color: #4682a58c;
+}
+
+.slice__data--water {
+    margin-top: auto;
+}
+
+.slice__data--period {
+	color: #fff;
+}
+
+
+.slice__data .icon,
+.nodata-wrap .icon {
+	-webkit-flex: none;
+	-ms-flex: none;
+	flex: none;
+	margin: 0 0.5em 0 0;
+}
+
+.wstate-wrap {
+	font-size: 2em;
+	position: absolute;
+	z-index: 100;
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+}
+
+.wstate {
+	position: absolute;
+	top: 0;
+	right: -40%;
+	width: 100%;
+	max-height: 100%;
+	opacity: 0;
+}
+
+.slice--state-sunny .wstate--sunny,
+.slice--state-cloudy .wstate--cloudy,
+.slice--state-partlycloudy .wstate--partlycloudy,
+.slice--state-rain .wstate--rain,
+.slice--state-thunders .wstate--thunders,
+.slice--state-clearnight .wstate--clearnight,
+.slice--state-partlycloudynight .wstate--partlycloudynight {
+	opacity: 1;
+}
+
+
+/* Hover areas */
+.slice__hover {
+	position: absolute;
+	z-index: 1000;
+	top: 0;
+	left: 0;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	width: 100%;
+	height: 100%;
+	pointer-events: auto;
+}
+
+.slice__hover div {
+	width: calc(100% / 8);
+	height: 100%;
+}
+
+
+.slice__hover div.slice__hover__sub--00{
+	width: calc(100% / 24);
+}
+.slice__hover div.slice__hover__sub--01{
+	width: calc(100% / 23);
+}
+.slice__hover div.slice__hover__sub--02{
+	width: calc(100% / 22);
+}
+.slice__hover div.slice__hover__sub--03{
+	width: calc(100% / 21);
+}
+.slice__hover div.slice__hover__sub--04{
+	width: calc(100% / 20);
+}
+.slice__hover div.slice__hover__sub--05{
+	width: calc(100% / 19);
+}
+.slice__hover div.slice__hover__sub--06{
+	width: calc(100% / 18);
+}
+.slice__hover div.slice__hover__sub--07{
+	width: calc(100% / 17);
+}
+.slice__hover div.slice__hover__sub--08{
+	width: calc(100% / 16);
+}
+.slice__hover div.slice__hover__sub--09{
+	width: calc(100% / 15);
+}
+.slice__hover div.slice__hover__sub--10{
+	width: calc(100% / 14);
+}
+.slice__hover div.slice__hover__sub--11{
+	width: calc(100% / 13);
+}
+.slice__hover div.slice__hover__sub--12{
+	width: calc(100% / 12);
+}
+.slice__hover div.slice__hover__sub--13{
+	width: calc(100% / 11);
+}
+.slice__hover div.slice__hover__sub--14{
+	width: calc(100% / 10);
+}
+.slice__hover div.slice__hover__sub--15{
+	width: calc(100% / 9);
+}
+.slice__hover div.slice__hover__sub--16{
+	width: calc(100% / 8);
+}
+.slice__hover div.slice__hover__sub--17{
+	width: calc(100% / 7);
+}
+.slice__hover div.slice__hover__sub--18{
+	width: calc(100% / 6);
+}
+.slice__hover div.slice__hover__sub--19{
+	width: calc(100% / 5);
+}
+.slice__hover div.slice__hover__sub--20{
+	width: calc(100% / 4);
+}
+.slice__hover div.slice__hover__sub--21{
+	width: calc(100% / 3);
+}
+.slice__hover div.slice__hover__sub--22{
+	width: calc(100% / 2);
+}
+.slice__hover div.slice__hover__sub--23{
+	width: calc(100% / 1);
+}
+
+.slice__hover div:hover {
+	background: rgba(0, 0, 0, 0.03);
+}
+
+
+/* SVG graph and lines */
+.graph,
+.lines {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 100vh;
+	pointer-events: none;
+}
+
+.graph__path {
+	opacity: 0.6;
+	fill: url(/#gradient2);
+	stroke-linecap: round;
+}
+
+.graph__point {
+	fill: #fff;
+}
+
+.line {
+	stroke: #000;
+	stroke-width: 0px;
+}
+
+@media screen and (max-width:43.25em) {
+	.meteo-header {
+		font-size: 0.85em;
+		padding-bottom: 1em;
+		background: rgba(112, 155, 183, 0.21);
+	}
+	.slice {
+		display: block;
+		padding-top: 3em;
+	}
+	.slice:not(:last-child) {
+		border-right: 1px solid rgba(0, 0, 0, 0.1);
+	}
+	.slice__data {
+		font-size: 2.25vw;
+		-webkit-flex-wrap: wrap;
+		-ms-flex-wrap: wrap;
+		flex-wrap: wrap;
+		-webkit-justify-content: center;
+		-ms-flex-pack: center;
+		justify-content: center;
+		width: 100%;
+		padding: 0.85em 0.25em;
+		text-align: center;
+		color: #fff;
+	}
+	.slice__data .slice__data {
+		padding: 0;
+	}
+	.slice__data .icon,
+	.nodata-wrap .icon {
+		display: block;
+		width: 100%;
+		margin: 0 auto;
+	}
+	.slice__data--period,
+	.slice__hover,
+	.slice__data .slice__data--day {
+		display: none;
+	}
+	.wstate-wrap {
+		height: 2em;
+	}
+	.slice__data--dateday {
+		padding: 4em 0 0;
+	}
+}
+
+@media screen and (max-width:35em) {
+	.slice__data {
+		font-size: 4vw;
+	}
+}
+/*************************
+ DEMO
+************************/
+
+/*************************
+ WEATHER
+************************/
+.todo-container {
+  font-family: "Roboto";
+  position: relative;
+  max-width: 900px;
+  margin: 30px auto 0;
+  padding: 20px 10px 10px 10px;
+  box-shadow: 0 -1px 0 #e5e5e5,
+              0 0 2px rgba(0,0,0,.12),
+              0 2px 4px rgba(0,0,0,.24);
+}
+
+.todo-container .todo-title {
+  padding: 5px;
+  background-color: #fff;
+  position: absolute;
+  font-size: 30px;
+  top: -45px;
+  left: 0;
+  color: steelblue;
+}
+
+.todo-container .todo-form {
+  margin-top: 20px;
+}
+
+.todo-container input {
+  border: none;
+  border-bottom: 2px solid #ddd;
+  font-size: 17px;
+  padding: 5px 3px;
+  width: 90%;
+  box-sizing: border-box;
+}
+
+.todo-container input:focus {
+  outline: 0;
+}
+
+.todo-container button {
+  border-radius: 100%;
+  padding: 10px 14px;
+  font-weight: bold;
+  color: #fff;
+  background-color: steelblue;
+  cursor: pointer;
+  border: 2px solid #ddd;
+  font-size: 15px;
+  transition: all .2s;
+}
+
+.todo-container button:focus,
+.todo-container button:active {
+  outline: none;
+}
+
+.todo-container button:disabled {
+  opacity: .7;
+  color: steelblue;
+  background-color: #fff;
+  cursor: not-allowed;
+}
+
+.todo-container .todo-error {
+  border-bottom-color: #E22323;
+}
+
+.todo-container .todo-item {
+  padding: 3px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.todo-container .todo-item:hover {
+  background-color: #f1f2f3;
+}
+
+/*Fix*/
+.md-autocomplete-suggestions-container{
+ z-index:100000 !important; /* any number of choice > 1050*/
+}
+/*************************
+ WEATHER
+************************/

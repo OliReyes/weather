@@ -1,1 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
+
+/*************************
+ DEMO
+************************/
+*,
+*::after,
+*::before {
+	box-sizing: border-box;
+}
+
+html {
+	position: relative;
+	height: 100vh;
+	overflow: hidden;
+}
+
+body {
+	font-family: 'Roboto', Arial, sans-serif;
+	color: #fff;
+	background: #a0cfe4;
+	position: relative;
+	height: 100vh;
+  margin: 0;
+	overflow: hidden;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+a {
+	text-decoration: none;
+	color: #435965;
+	outline: none;
+}
+
+a:hover,
+a:focus {
+	color: #fff;
+}
