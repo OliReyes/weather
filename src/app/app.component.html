@@ -83,7 +83,7 @@
     <!-- Section where the forecast information and visuals will be shown. -->
     <div class="slices" *ngIf="cityWeather">
       <!-- Individual day forecast information template shown as a column. -->
-      <div *ngFor="let forecastDay of cityWeather" class="slice" [ngClass]="[forecastDay.stateName, forecastDay.periodName]" (mouseleave)="sliceBackToDisplay($event, dayForecast)">
+      <div *ngFor="let forecastDay of cityWeather" class="slice" [ngClass]="[forecastDay.stateName, forecastDay.periodName]" (mouseleave)="sliceBackToDisplay($event, forecastDay)">
         <!-- All possible svg images of sky state ready to use (show). -->
         <div class="wstate-wrap">
           <svg class="wstate wstate--sunny">
@@ -126,7 +126,7 @@
           <svg class="icon icon--thermometer">
             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-thermometer"></use>
           </svg>
-          <span *ngIf="forecastDay.airTemp.length" class="slice__data slice__data--temperature">{{forecastDay.airTemp[1]}} {{dayForecast.units.temperature}}
+          <span *ngIf="forecastDay.airTemp.length" class="slice__data slice__data--temperature">{{forecastDay.airTemp[1]}} {{forecastDay.units.temperature}}
             <span class="slice__data--air__mintemp">{{forecastDay.airTemp[0]}} {{forecastDay.units.temperature}}</span>
           </span>
           <span *ngIf="!forecastDay.airTemp.length" class="slice__data slice__data--temperature">{{forecastDay.airTemp}} {{forecastDay.units.temperature}}</span>
@@ -162,7 +162,7 @@
         </span> -->
 
         <div class="slice__hover">
-          <div *ngFor="let interval of getNumberOfIntervals(forecastDay.timeInterval)" (mouseenter)="updateSlice($index, forecastDay)" [ngClass]="forecastDay.timeIntervalName"></div>
+          <div *ngFor="let interval of getNumberOfIntervals(forecastDay.timeInterval); let i = index" (mouseenter)="updateSlice($event, forecastDay, i)" [ngClass]="forecastDay.timeIntervalName"></div>
         </div>
 
       </div>

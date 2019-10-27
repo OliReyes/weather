@@ -11,7 +11,7 @@ export class WeatherService {
   ){}
 
   timeIntervals: number = 24
-  cityForecast: array = []
+  cityForecast: Array<any> = []
 
   getCityWeather(lat: number, lon: number){
 
@@ -19,7 +19,7 @@ export class WeatherService {
     const PROXYCORS = 'https://cors-anywhere.herokuapp.com'
     const APIKEY = 'c7e919996d611be09f8ae915710226e8'
     const latlon = lat + ',' + lon
-    const params = '?units=si&extend=hourly'
+    const params = '?units=ca&extend=hourly'
 
     return this.http.get( PROXYCORS + '/' + BASEURL + '/' + APIKEY + '/' + latlon + params )
 
@@ -29,7 +29,7 @@ export class WeatherService {
    * Converts raw data from forecast API into an object compatible with this app.
    * Creates an array with the forecast of the requested city divided in days represented as objects like you can see above.
    */
-   preMapDays(forecastRawData: array){
+   preMapDays(forecastRawData: Array<any>){
 
      forecastRawData.forEach( (forecastPerCertainHours, key) => {
 
@@ -40,13 +40,13 @@ export class WeatherService {
        }
 
        // Prepares all values that will be shown in the forecast view.
-       const localDate = new Date(forecastPerCertainHours.time * 1000)
-       const formatedDate = (localDate.getMonth() + 1) + '/' + localDate.getDate()
-       const stateCode = this.getStateFilteredCode(forecastPerCertainHours.icon)
-       const temperature = Math.round(forecastPerCertainHours.temperature)
-       const windSpeed = Math.round(forecastPerCertainHours.windSpeed * 1.609344)
-       const windDirection = Math.round(forecastPerCertainHours.windBearing)
-       const precipitation = Math.round(forecastPerCertainHours.precipProbability)
+       const localDate: Date = new Date(forecastPerCertainHours.time * 1000)
+       const formatedDate: string = (localDate.getMonth() + 1) + '/' + localDate.getDate()
+       const stateCode: number = this.getStateFilteredCode(forecastPerCertainHours.icon)
+       const temperature: number = Math.round(forecastPerCertainHours.temperature)
+       const windSpeed: number = Math.round(forecastPerCertainHours.windSpeed)
+       const windDirection: number = Math.round(forecastPerCertainHours.windBearing)
+       const precipitation: number = Math.round(forecastPerCertainHours.precipProbability)
 
        this.cityForecast.forEach( (forecastDay, key) => {
 
@@ -61,8 +61,8 @@ export class WeatherService {
          // If not, then creates a new one.
          }else if (forecastDay['date'] !== formatedDate) {
            // "cityForecast.length < 5" don't want to show more than 5 days forecast.
-           if(key === this.cityForecast.length - 1 && thi.cityForecast.length < 5){
-             this.createNewForecastDay(forecastPerCertainHours)
+           if(key === this.cityForecast.length - 1 && this.cityForecast.length < 5){
+             this.createNewForecastDay(forecastPerCertainHours, key)
            }
          }
 
@@ -75,19 +75,19 @@ export class WeatherService {
    /**
     * Creates a new day forecast object.
     */
-   createNewForecastDay(hourForecast: object, key: number){
+   createNewForecastDay(hourForecast: any, key: number){
 
      // Prepares all values that will be shown in the forecast view.
-     const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
-     const localDate = new Date(hourForecast.time * 1000)
-     const initialSetHours = localDate.getHours()
-     const timeInterval = this.getTimeInterval(initialSetHours)
-     const formatedDate = (localDate.getMonth() + 1) + '/' + localDate.getDate()
-     const stateCode = this.getStateFilteredCode(hourForecast.icon)
-     const temperature = Math.round(hourForecast.temperature)
-     const windSpeed = Math.round(hourForecast.windSpeed * 1.609344)
-     const windDirection = Math.round(hourForecast.windBearing)
-     const precipitation = Math.round(hourForecast.precipProbability)
+     const days: Array<string> = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
+     const localDate: Date = new Date(hourForecast.time * 1000)
+     const initialSetHours: number = localDate.getHours()
+     const timeInterval: number = this.getTimeInterval(initialSetHours)
+     const formatedDate: string = (localDate.getMonth() + 1) + '/' + localDate.getDate()
+     const stateCode: number = this.getStateFilteredCode(hourForecast.icon)
+     const temperature: number = Math.round(hourForecast.temperature)
+     const windSpeed: number = Math.round(hourForecast.windSpeed)
+     const windDirection: number = Math.round(hourForecast.windBearing)
+     const precipitation: number = Math.round(hourForecast.precipProbability)
 
      // Defining and creating the day forecast object.
      let firstDay = {
@@ -111,7 +111,7 @@ export class WeatherService {
    /**
     * Gets the correct display values for each case.
     */
-   calcDisplay(forecastDay: object){
+   calcDisplay(forecastDay: any){
 
      for (let property in forecastDay) {
 
@@ -155,7 +155,7 @@ export class WeatherService {
    /**
     * Prepares and maps an object for the manipulation in the view.
     */
-   mapDays(data: array) {
+   mapDays(data: Array<any>) {
 
      this.preMapDays(data)
 
@@ -328,7 +328,7 @@ export class WeatherService {
     */
    getIntervalsPossibilities(interval: number){
 
-     let possibilites: array;
+     let possibilites: Array<any> = [];
      // EXAMPLE:
      // var possibilites = [
      //   [7],

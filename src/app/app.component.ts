@@ -8,7 +8,7 @@ import { WeatherService } from './weather.service';
 })
 export class AppComponent implements OnInit {
 
-  cityWeather: array = []
+  cityWeather: Array<any> = []
   timeIntervals: number = 24
 
   constructor(
@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
 
       this.cityWeather = this.weatherService.mapDays(data)
 
-      console.log(this.cityWeather)
+      console.log(data)
 
     } )
 
@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
    */
   getNumberOfIntervals(timeIntervals: number) {
 
-    let intervals: array = []
+    let intervals: Array<any> = []
 
     for(let i = 0; i <= timeIntervals - 1; ++i ){
       intervals.push(i);
@@ -50,7 +50,7 @@ export class AppComponent implements OnInit {
   /**
    * Changes the values of the forecast information for a particular slice (day).
    */
-  updateSlice(index, forecastDay) {
+  updateSlice(event, forecastDay, index) {
 
     forecastDay.stateName = this.weatherService.getStateClassname(forecastDay.state.hourly[index])
     forecastDay.periodTime = this.weatherService.getTimePeriod(index, forecastDay.timeInterval)
@@ -60,12 +60,13 @@ export class AppComponent implements OnInit {
     forecastDay.windSpeedNum = forecastDay.windspeed.hourly[index]
     forecastDay.windDirectionDeg = forecastDay.winddirection.hourly[index]
     forecastDay.rainProb = forecastDay.rain.hourly[index]
+
   }
 
   /**
    * Set back the default and average values of the forecast information for a particular slice (day).
    */
-  sliceBackToDisplay(ev, forecastDay) {
+  sliceBackToDisplay(event, forecastDay) {
 
     forecastDay.stateName = this.weatherService.getStateClassname(forecastDay.state.display)
     forecastDay.periodTime = ''
@@ -74,7 +75,7 @@ export class AppComponent implements OnInit {
     forecastDay.airTemp = forecastDay.air.display
     forecastDay.windSpeedNum = forecastDay.windspeed.display
     forecastDay.windDirectionDeg = forecastDay.winddirection.display
-    forecastDay.rainProb = forecastDay.rain.display
+    forecastDay.rainProb = forecastDay.rain.display;
 
   }
 
