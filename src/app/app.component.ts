@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core'
 import { WeatherService } from './weather.service'
+import { FormControl } from '@angular/forms'
+
+export interface Language {
+  name: string;
+  code: string;
+}
 
 @Component({
   selector: 'app-root',
@@ -11,6 +17,13 @@ export class AppComponent implements OnInit {
   cityWeather: Array<any> = []
   timeIntervals: number = 24
 
+  languages: Array<Language> = [
+    {name: 'Spanish', code: 'es'},
+    {name: 'French', code: 'fr'},
+    {name: 'Arabic', code: 'ar'},
+    {name: 'English', code: 'en'}
+  ]
+
   constructor(
     private weatherService: WeatherService
   ){}
@@ -19,9 +32,9 @@ export class AppComponent implements OnInit {
     this.loadCityWeather(40.4165, -3.70256)
   }
 
-  loadCityWeather(lat :number, lon: number){
+  loadCityWeather(lat :number, lon: number, language: string = 'en'){
 
-    this.weatherService.getCityWeather(lat, lon).subscribe( forecastRawData => {
+    this.weatherService.getCityWeather(lat, lon, language).subscribe( forecastRawData => {
 
       let newForecastRawData: any = forecastRawData
 
@@ -77,7 +90,15 @@ export class AppComponent implements OnInit {
     forecastDay.airTemp = forecastDay.air.display
     forecastDay.windSpeedNum = forecastDay.windspeed.display
     forecastDay.windDirectionDeg = forecastDay.winddirection.display
-    forecastDay.rainProb = forecastDay.rain.display;
+    forecastDay.rainProb = forecastDay.rain.display
+
+  }
+
+  changeLanguage($event){
+
+    const languageCodeSelected = $event.value
+
+    this.loadCityWeather(40.4165, -3.70256, languageCodeSelected)
 
   }
 
