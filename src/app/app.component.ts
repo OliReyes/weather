@@ -8,7 +8,7 @@ import { WeatherService } from './weather.service';
 })
 export class AppComponent implements OnInit {
 
-  cityWeather: array
+  cityWeather: array = []
   timeIntervals: number = 24
 
   constructor(
@@ -23,14 +23,9 @@ export class AppComponent implements OnInit {
 
     this.weatherService.getCityWeather(lat, lon).subscribe( ( { hourly: { data } } ) => {
 
-      console.log(data)
+      this.cityWeather = this.weatherService.mapDays(data)
 
-      // let cityWeather = this.weatherService.preMapDays(data)
-      // this.weatherService.initMapDays(cityWeather)
-      //
-      // this.cityWeather = cityWeather
-      //
-      // console.log(this.cityWeather)
+      console.log(this.cityWeather)
 
     } )
 
@@ -39,26 +34,28 @@ export class AppComponent implements OnInit {
   /**
    * Returns a array that allows to create many hover divs as intervals.
    */
-  getNumberOfIntervals(timeIntervals) {
+  getNumberOfIntervals(timeIntervals: number) {
 
-    let intervals = [];
+    let intervals: array = []
 
     for(let i = 0; i <= timeIntervals - 1; ++i ){
       intervals.push(i);
     }
 
-    return intervals;
+    return intervals
+
   }
+
 
   /**
    * Changes the values of the forecast information for a particular slice (day).
    */
   updateSlice(index, forecastDay) {
 
-    forecastDay.stateName = getStateClassname(forecastDay.state.hourly[index])
-    forecastDay.periodTime = getTimePeriod(index, forecastDay.timeInterval)
+    forecastDay.stateName = this.weatherService.getStateClassname(forecastDay.state.hourly[index])
+    forecastDay.periodTime = this.weatherService.getTimePeriod(index, forecastDay.timeInterval)
     forecastDay.periodHidden = ''
-    forecastDay.periodName = getPeriodClassname(index)
+    forecastDay.periodName = this.weatherService.getPeriodClassname(index)
     forecastDay.airTemp = forecastDay.air.hourly[index]
     forecastDay.windSpeedNum = forecastDay.windspeed.hourly[index]
     forecastDay.windDirectionDeg = forecastDay.winddirection.hourly[index]
@@ -70,7 +67,7 @@ export class AppComponent implements OnInit {
    */
   sliceBackToDisplay(ev, forecastDay) {
 
-    forecastDay.stateName = getStateClassname(forecastDay.state.display)
+    forecastDay.stateName = this.weatherService.getStateClassname(forecastDay.state.display)
     forecastDay.periodTime = ''
     forecastDay.periodName = ''
     forecastDay.periodHidden = 'slice__data--hidden'

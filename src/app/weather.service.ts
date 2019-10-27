@@ -11,7 +11,7 @@ export class WeatherService {
   ){}
 
   timeIntervals: number = 24
-  cityForecast: array
+  cityForecast: array = []
 
   getCityWeather(lat: number, lon: number){
 
@@ -40,7 +40,7 @@ export class WeatherService {
        }
 
        // Prepares all values that will be shown in the forecast view.
-       const localDate = new Date(forecastPerCertainHours.time)
+       const localDate = new Date(forecastPerCertainHours.time * 1000)
        const formatedDate = (localDate.getMonth() + 1) + '/' + localDate.getDate()
        const stateCode = this.getStateFilteredCode(forecastPerCertainHours.icon)
        const temperature = Math.round(forecastPerCertainHours.temperature)
@@ -61,7 +61,7 @@ export class WeatherService {
          // If not, then creates a new one.
          }else if (forecastDay['date'] !== formatedDate) {
            // "cityForecast.length < 5" don't want to show more than 5 days forecast.
-           if(key === cityForecast.length - 1 && cityForecast.length < 5){
+           if(key === this.cityForecast.length - 1 && thi.cityForecast.length < 5){
              this.createNewForecastDay(forecastPerCertainHours)
            }
          }
@@ -69,8 +69,6 @@ export class WeatherService {
        } )
 
      } )
-
-     return this.cityForecast
 
    }
 
@@ -81,7 +79,7 @@ export class WeatherService {
 
      // Prepares all values that will be shown in the forecast view.
      const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
-     const localDate = new Date(hourForecast.time)
+     const localDate = new Date(hourForecast.time * 1000)
      const initialSetHours = localDate.getHours()
      const timeInterval = this.getTimeInterval(initialSetHours)
      const formatedDate = (localDate.getMonth() + 1) + '/' + localDate.getDate()
@@ -92,7 +90,7 @@ export class WeatherService {
      const precipitation = Math.round(hourForecast.precipProbability)
 
      // Defining and creating the day forecast object.
-     const firstDay = {
+     let firstDay = {
        'timeInterval': timeInterval,
        'state': { 'display' : 0, 'hourly' : [stateCode]},
        'day' : key === 0 ? 'Today' : days[localDate.getDay()],
@@ -157,9 +155,11 @@ export class WeatherService {
    /**
     * Prepares and maps an object for the manipulation in the view.
     */
-   initMapDays() {
+   mapDays(data: array) {
 
-     this.cityWeather.forEach( (day, key) => {
+     this.preMapDays(data)
+
+     this.cityForecast.forEach( (day, key) => {
 
        day.stateName = this.getStateClassname(day.state.display);
        day.timeIntervalName = this.getTimeIntervalClass(day.timeInterval);
@@ -179,6 +179,8 @@ export class WeatherService {
        }
 
      } )
+
+     return this.cityForecast
 
    }
 
@@ -314,8 +316,8 @@ export class WeatherService {
     */
    getTimePeriod(period: number, indivTimeInterval: number) {
 
-     const possibilites = this.getIntervalsPossibilities(timeIntervals)
-     const interval = 24/timeIntervals
+     const possibilites = this.getIntervalsPossibilities(this.timeIntervals)
+     const interval = 24/this.timeIntervals
      const newPeriod = possibilites[indivTimeInterval - 1][period]
      return newPeriod * interval + ':00 - ' + (newPeriod + 1) * interval + ':00'
 
