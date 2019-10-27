@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core'
+import { HttpClient, HttpParams  } from '@angular/common/http'
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +19,10 @@ export class WeatherService {
     const PROXYCORS = 'https://cors-anywhere.herokuapp.com'
     const APIKEY = 'c7e919996d611be09f8ae915710226e8'
     const latlon = lat + ',' + lon
-    const params = '?units=ca&extend=hourly'
+    let params = new HttpParams()
+    params = params.set('units', 'ca').set('extend', 'hourly')
 
-    return this.http.get( PROXYCORS + '/' + BASEURL + '/' + APIKEY + '/' + latlon + params )
+    return this.http.get( PROXYCORS + '/' + BASEURL + '/' + APIKEY + '/' + latlon, { params } )
 
   }
 

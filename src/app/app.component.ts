@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { WeatherService } from './weather.service';
+import { Component, OnInit } from '@angular/core'
+import { WeatherService } from './weather.service'
 
 @Component({
   selector: 'app-root',
@@ -23,9 +23,11 @@ export class AppComponent implements OnInit {
 
     this.weatherService.getCityWeather(lat, lon).subscribe( forecastRawData => {
 
-      console.log(forecastRawData)
+      let newForecastRawData: any = forecastRawData
 
-      this.cityWeather = this.weatherService.mapDays(forecastRawData.hourly.data)
+      console.log(newForecastRawData)
+
+      this.cityWeather = this.weatherService.mapDays(newForecastRawData.hourly.data)
 
     } )
 
