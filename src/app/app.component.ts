@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core'
 import { WeatherService } from './weather.service'
 import { FormControl } from '@angular/forms'
+import { Observable } from 'rxjs'
+import { map, startWith } from 'rxjs/operators'
 
 export interface Language {
   name: string;
@@ -24,12 +26,36 @@ export class AppComponent implements OnInit {
     {name: 'English', code: 'en'}
   ]
 
+  myControl = new FormControl();
+  options: string[] = ['One', 'Two', 'Three'];
+  filteredOptions: Observable<string[]>;
+
   constructor(
     private weatherService: WeatherService
   ){}
 
   ngOnInit(){
+
     this.loadCityWeather(40.4165, -3.70256)
+
+    this.filteredOptions = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map( value => this._filter(value) )
+      )
+
+  }
+
+  private _filter(value: string): string[] {
+
+    const filterValue = value.toLowerCase()
+
+    return this.options.filter(option => option.toLowerCase().includes(filterValue))
+
+  }
+
+  changeCity(){
+    console.log('CAMBIO CIUDAD')
   }
 
   loadCityWeather(lat :number, lon: number, language: string = 'en'){

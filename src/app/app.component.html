@@ -64,6 +64,17 @@
 
   <header class="weather-header">
 
+    <form class="cities-selector">
+      <mat-form-field>
+        <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="changeCity($event)">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+
     <mat-form-field class="weather-language">
       <mat-label>Select language</mat-label>
       <mat-select (selectionChange)="changeLanguage($event)">
