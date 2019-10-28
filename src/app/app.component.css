@@ -39,21 +39,19 @@ main {
 	transform: rotate(35deg);
 }
 
-/* Header */
-.meteo-header {
-	position: relative;
-	z-index: 10000;
-	display: -webkit-flex;
-	display: -ms-flexbox;
+.weather-header{
+	z-index: 2;
+	position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  width: 100%;
+  height: 15vh;
 	display: flex;
-	-webkit-flex-wrap: wrap;
-	-ms-flex-wrap: wrap;
-	flex-wrap: wrap;
-	-webkit-align-items: center;
-	-ms-flex-align: center;
 	align-items: center;
-	width: 100%;
-	padding: 0.8em 1.5em 3em 0;
+	justify-content: space-between;
+	padding-left: 1em;
+	padding-right: 1em;
 }
 
 .meteo-header__main {
@@ -63,8 +61,8 @@ main {
 	align-items: center;
 }
 
-md-autocomplete{
-	min-width: 250px;
+.cities-selector{
+	margin-right: 2em;
 }
 
 /* Graph content */
@@ -153,7 +151,7 @@ md-autocomplete{
 	font-size: 1.25vw;
 	line-height: 1.5;
 	position: relative;
-	z-index: 100;
+	z-index: 0;
 	display: -webkit-flex;
 	display: -ms-flexbox;
 	display: flex;
@@ -210,7 +208,7 @@ md-autocomplete{
 .wstate-wrap {
 	font-size: 2em;
 	position: absolute;
-	z-index: 100;
+	z-index: 0;
 	overflow: hidden;
 	width: 100%;
 	height: 100%;
@@ -240,7 +238,7 @@ md-autocomplete{
 /* Hover areas */
 .slice__hover {
 	position: absolute;
-	z-index: 1000;
+	z-index: 1;
 	top: 0;
 	left: 0;
 	display: -webkit-flex;
@@ -494,11 +492,6 @@ md-autocomplete{
 
 .todo-container .todo-item:hover {
   background-color: #f1f2f3;
-}
-
-/*Fix*/
-.md-autocomplete-suggestions-container{
- z-index:100000 !important; /* any number of choice > 1050*/
 }
 /*************************
  WEATHER
