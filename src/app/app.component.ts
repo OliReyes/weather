@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { WeatherService } from './weather.service'
+import { CitiesService } from './cities.service'
 import { FormControl } from '@angular/forms'
 import { Observable } from 'rxjs'
 import { map, startWith } from 'rxjs/operators'
@@ -26,36 +27,81 @@ export class AppComponent implements OnInit {
     {name: 'English', code: 'en'}
   ]
 
-  myControl = new FormControl();
-  options: string[] = ['One', 'Two', 'Three'];
-  filteredOptions: Observable<string[]>;
+  myControl = new FormControl()
+  options: objects[]
+  filteredOptions: Observable<string[]>
+
+  optionSelectedLat: number = 40.4165
+  optionSelectedLng: number = -3.70256
 
   constructor(
-    private weatherService: WeatherService
+    private weatherService: WeatherService,
+    private citiesService: CitiesService
   ){}
 
   ngOnInit(){
 
-    this.loadCityWeather(40.4165, -3.70256)
+    this.loadCityWeather(this.optionSelectedLat, this.optionSelectedLng)
 
-    this.filteredOptions = this.myControl.valueChanges
-      .pipe(
-        startWith(''),
-        map( value => this._filter(value) )
-      )
+    // this.filteredOptions = this.myControl.valueChanges
+    //   .pipe(
+    //     startWith(''),
+    //     map( value => this._filter(value) )
+    //   )
+
+    this.myControl.valueChanges.subscribe( value => {
+
+      if( typeof value === 'string' ){
+
+        const filterValue = value.toLowerCase()
+
+        this.citiesService.getCitiesStats(filterValue).subscribe( cities => {
+
+          this.options = cities.geonames
+
+          this.filteredOptions = this.options.filter(option => {
+
+            return option.name.toLowerCase().startsWith(filterValue)
+
+          } )
+
+        } )
+
+      }
+
+    } )
 
   }
 
-  private _filter(value: string): string[] {
+  // private _filter(value: string): string[] {
+  //
+  //   const filterValue = value.toLowerCase()
+  //
+  //   this.citiesService.getCitiesStats(filterValue).subscribe( cities => {
+  //
+  //     this.options = cities.geonames
+  //
+  //   } )
+  //
+  //   return this.options.filter(option => option.name.toLowerCase().includes(filterValue))
+  //
+  // }
 
-    const filterValue = value.toLowerCase()
+  changeCity(event){
 
-    return this.options.filter(option => option.toLowerCase().includes(filterValue))
+    this.optionSelectedLat = event.option.value.lat
+    this.optionSelectedLng = event.option.value.lng
+
+    this.loadCityWeather(this.optionSelectedLat, this.optionSelectedLng)
 
   }
 
-  changeCity(){
-    console.log('CAMBIO CIUDAD')
+  displayCity(option: any){
+
+    if( option !== null ){
+      return option.name
+    }
+
   }
 
   loadCityWeather(lat :number, lon: number, language: string = 'en'){
@@ -124,7 +170,7 @@ export class AppComponent implements OnInit {
 
     const languageCodeSelected = $event.value
 
-    this.loadCityWeather(40.4165, -3.70256, languageCodeSelected)
+    this.loadCityWeather(this.optionSelectedLat, this.optionSelectedLng, languageCodeSelected)
 
   }
 

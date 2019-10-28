@@ -66,10 +66,10 @@
 
     <form class="cities-selector">
       <mat-form-field>
-        <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="changeCity($event)">
-          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-            {{option}}
+        <input type="text" placeholder="Choose a city" aria-label="City" matInput [formControl]="myControl" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="changeCity($event)" [displayWith]="displayCity">
+          <mat-option *ngFor="let option of filteredOptions" [value]="option">
+            {{option.name}}, {{option.countryName}}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
