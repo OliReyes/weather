@@ -23,6 +23,7 @@ export class WeatherService {
     const APIKEY = 'c7e919996d611be09f8ae915710226e8'
     const latlon = lat + ',' + lon
     let params = new HttpParams()
+
     params = params.set('units', 'ca').set('extend', 'hourly').set('lang', lang)
 
     return this.http.get( PROXYCORS + '/' + BASEURL + '/' + APIKEY + '/' + latlon, { params } )
