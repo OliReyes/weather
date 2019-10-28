@@ -28,8 +28,8 @@ export class AppComponent implements OnInit {
   ]
 
   myControl = new FormControl()
-  options: objects[]
-  filteredOptions: Observable<string[]>
+  options: Array<object>
+  filteredOptions: Array<object>
 
   optionSelectedLat: number = 40.4165
   optionSelectedLng: number = -3.70256
@@ -57,11 +57,15 @@ export class AppComponent implements OnInit {
 
         this.citiesService.getCitiesStats(filterValue).subscribe( cities => {
 
-          this.options = cities.geonames
+          let citiesTyped: any = cities
+
+          this.options = citiesTyped.geonames
 
           this.filteredOptions = this.options.filter(option => {
 
-            return option.name.toLowerCase().startsWith(filterValue)
+            let optionTyped: any = option
+
+            return optionTyped.name.toLowerCase().startsWith(filterValue)
 
           } )
 

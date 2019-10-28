@@ -16,7 +16,7 @@ export class CitiesService {
     const PROXYCORS = 'https://cors-anywhere.herokuapp.com'
     const USERNAME = 'olimitch7'
     let params = new HttpParams()
-    params = params.set('q', query).set('maxRows', 5).set('username', USERNAME)
+    params = params.set('q', query).set('maxRows', '5').set('username', USERNAME)
 
     return this.http.get( PROXYCORS + '/' + BASEURL, { params } )
 
