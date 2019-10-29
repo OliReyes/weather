@@ -12,8 +12,8 @@ export class CitiesService {
 
   getCitiesStats(query: string){
 
+    const PROXYCORS = 'https://cors-platinum.herokuapp.com'
     const BASEURL = 'http://api.geonames.org/searchJSON'
-    const PROXYCORS = 'https://cors-anywhere.herokuapp.com'
     const USERNAME = 'olimitch7'
     let params = new HttpParams()
     params = params.set('q', query).set('maxRows', '5').set('username', USERNAME)

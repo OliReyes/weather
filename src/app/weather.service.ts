@@ -18,8 +18,8 @@ export class WeatherService {
 
     this.language = lang
 
+    const PROXYCORS = 'https://cors-platinum.herokuapp.com'
     const BASEURL = 'https://api.darksky.net/forecast'
-    const PROXYCORS = 'https://cors-anywhere.herokuapp.com'
     const APIKEY = 'c7e919996d611be09f8ae915710226e8'
     const latlon = lat + ',' + lon
     let params = new HttpParams()
