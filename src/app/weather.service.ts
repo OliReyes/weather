@@ -13,19 +13,30 @@ export class WeatherService {
   timeIntervals: number = 24
   cityForecast: Array<any> = []
   language: string
+  currentTimeZone: number
 
   getCityWeather(lat: number, lon: number, lang: string = 'en'){
 
     this.language = lang
 
-    const PROXYCORS = 'https://cors-platinum.herokuapp.com'
     const BASEURL = 'https://api.darksky.net/forecast'
+    const PROXYCORS = 'https://cors-anywhere.herokuapp.com'
     const APIKEY = 'c7e919996d611be09f8ae915710226e8'
     const latlon = lat + ',' + lon
     let params = new HttpParams()
+
     params = params.set('units', 'ca').set('extend', 'hourly').set('lang', lang)
 
     return this.http.get( PROXYCORS + '/' + BASEURL + '/' + APIKEY + '/' + latlon, { params } )
+
+  }
+
+  /**
+   * Set the current time zone of the city (date and time).
+   */
+  setCurrentTimeZone(currentTimeZone: Date){
+
+    this.currentTimeZone = currentTimeZone
 
   }
 
@@ -41,12 +52,17 @@ export class WeatherService {
 
        // If it is the first hours interval forecast.
        if(key === 0){
+         forecastPerCertainHours.time = this.currentTimeZone.getTime()
          this.createNewForecastDay(forecastPerCertainHours, key)
          return false
        }
 
+       this.currentTimeZone.setHours( this.currentTimeZone.getHours() + 1 )
+       this.currentTimeZone.setMinutes(0)
+       this.currentTimeZone.setSeconds(0)
+
        // Prepares all values that will be shown in the forecast view.
-       const localDate: Date = new Date(forecastPerCertainHours.time * 1000)
+       const localDate: Date = this.currentTimeZone
        const formatedDate: string = (localDate.getMonth() + 1) + '/' + localDate.getDate()
        const stateCode: number = this.getStateFilteredCode(forecastPerCertainHours.icon)
        const temperature: number = Math.round(forecastPerCertainHours.temperature)
@@ -105,7 +121,7 @@ export class WeatherService {
        today = 'اليوم'
      }
 
-     const localDate: Date = new Date(hourForecast.time * 1000)
+     const localDate: Date = this.currentTimeZone
      const initialSetHours: number = localDate.getHours()
      const timeInterval: number = this.getTimeInterval(initialSetHours)
      const formatedDate: string = (localDate.getMonth() + 1) + '/' + localDate.getDate()

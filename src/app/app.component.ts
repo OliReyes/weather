@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { WeatherService } from './weather.service'
 import { CitiesService } from './cities.service'
+import { TimezoneService } from './timezone.service'
 import { FormControl } from '@angular/forms'
 import { Observable } from 'rxjs'
 import { map, startWith } from 'rxjs/operators'
@@ -36,7 +37,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private weatherService: WeatherService,
-    private citiesService: CitiesService
+    private citiesService: CitiesService,
+    private timezoneService: TimezoneService
   ){}
 
   ngOnInit(){
@@ -116,7 +118,15 @@ export class AppComponent implements OnInit {
 
       console.log(newForecastRawData)
 
-      this.cityWeather = this.weatherService.mapDays(newForecastRawData.hourly.data)
+      this.timezoneService.getCityTimeZone(lat, lon).subscribe( timeZoneItem => {
+
+        let currentTimeZone = new Date(timeZoneItem.time)
+
+        this.weatherService.setCurrentTimeZone(currentTimeZone)
+
+        this.cityWeather = this.weatherService.mapDays(newForecastRawData.hourly.data)
+
+      } )
 
     } )
 
