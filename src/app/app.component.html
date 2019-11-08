@@ -146,7 +146,7 @@
         </span>
 
         <span class="slice__data slice__data--summary">
-          <span class="slice__data slice__data--day">{{forecastDay.summary}}</span>
+          <span class="slice__data slice__data--day">{{forecastDay.stateSummary}}</span>
         </span>
         <!-- <small>{{forecastDay.weather.description}}</small> -->
         <!-- Rest of the parameters templates. -->
@@ -166,9 +166,10 @@
           </svg><span class="slice__data slice__data--rain">{{forecastDay.rainProb}} {{forecastDay.units.percentage}}</span>
         </span>
         <span class="slice__data slice__data--wind">
-          <svg class="icon icon--direction" [ngStyle]="{'transform': 'rotate(' + forecastDay.windDirectionDeg + 'deg)', '-webkit-transform': 'rotate(' + forecastDay.windDirectionDeg + 'deg)', '-ms-transform': 'rotate(' + forecastDay.windDirectionDeg + 'deg)'}">
+          <svg *ngIf="forecastDay.windDirectionDeg" class="icon icon--direction" [ngStyle]="{'transform': 'rotate(' + forecastDay.windDirectionDeg + 'deg)', '-webkit-transform': 'rotate(' + forecastDay.windDirectionDeg + 'deg)', '-ms-transform': 'rotate(' + forecastDay.windDirectionDeg + 'deg)'}">
             <use xlink:href="#icon-direction"></use>
-          </svg><span class="slice__data slice__data--wind-speed">{{forecastDay.windSpeedNum}} {{forecastDay.units.speed}}</span>
+          </svg>
+          <span class="slice__data slice__data--wind-speed">{{forecastDay.windSpeedNum}} {{forecastDay.units.speed}}</span>
         </span>
         <!-- <span class="slice__data slice__data--rain">
           <svg class="icon icon--drop">
