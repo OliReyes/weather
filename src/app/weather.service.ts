@@ -13,7 +13,7 @@ export class WeatherService {
   timeIntervals: number = 24
   cityForecast: Array<any> = []
   language: string
-  currentTimeZone: number
+  currentTimeZone: Date
 
   getCityWeather(lat: number, lon: number, lang: string = 'en'){
 
@@ -68,7 +68,8 @@ export class WeatherService {
        const temperature: number = Math.round(forecastPerCertainHours.temperature)
        const windSpeed: number = Math.round(forecastPerCertainHours.windSpeed)
        const windDirection: number = Math.round(forecastPerCertainHours.windBearing)
-       const precipitation: number = Math.round(forecastPerCertainHours.precipProbability)
+       const precipitation: number = Math.round(forecastPerCertainHours.precipProbability * 100)
+       const summary: string = forecastPerCertainHours.summary
 
        this.cityForecast.forEach( (forecastDay, key2) => {
 
@@ -79,6 +80,7 @@ export class WeatherService {
            forecastDay.windspeed.hourly.push(windSpeed)
            forecastDay.winddirection.hourly.push(windDirection)
            forecastDay.rain.hourly.push(precipitation)
+           forecastDay.summary.hourly.push(summary)
            forecastDay = this.calcDisplay(forecastDay)
          // If not, then creates a new one.
          }else if (forecastDay['date'] !== formatedDate) {
@@ -129,13 +131,14 @@ export class WeatherService {
      const temperature: number = Math.round(hourForecast.temperature)
      const windSpeed: number = Math.round(hourForecast.windSpeed)
      const windDirection: number = Math.round(hourForecast.windBearing)
-     const precipitation: number = Math.round(hourForecast.precipProbability)
+     const precipitation: number = Math.round(hourForecast.precipProbability * 100)
+     const summary: string = hourForecast.summary
 
      // Defining and creating the day forecast object.
      let firstDay = {
        'timeInterval': timeInterval,
        'state': { 'display' : 0, 'hourly' : [stateCode]},
-       'summary': hourForecast.summary,
+       'summary': { 'display' : 'Uknown', 'hourly' : [summary]},
        'day' : key === 0 ? today : days[localDate.getDay()],
        'date' : formatedDate,
        'air' : { 'display' : [], 'hourly' : [temperature]},
@@ -163,7 +166,7 @@ export class WeatherService {
          if('display' in forecastDay[property]){
 
            // If the property is air then calculates min and max temperature.
-           if(property == 'air'){
+           if(property === 'air'){
 
              forecastDay[property].display = [];
 
@@ -172,6 +175,22 @@ export class WeatherService {
 
              forecastDay[property].display.push(minTemp)
              forecastDay[property].display.push(maxTemp)
+
+           }
+           else if(property === 'summary'){
+
+             let moreRepeatedSummary = this.getMoreRepeatedValue(forecastDay[property].hourly)
+
+             if(moreRepeatedSummary != null)
+               forecastDay[property].display = moreRepeatedSummary
+
+           }
+           else if(property === 'state'){
+
+             let moreRepeatedState = this.getMoreRepeatedValue(forecastDay[property].hourly)
+
+             if(moreRepeatedState != null)
+               forecastDay[property].display = moreRepeatedState
 
            }
            else{
@@ -195,6 +214,35 @@ export class WeatherService {
 
    }
 
+   getMoreRepeatedValue(array: Array<any>){
+
+     if(array.length === 0)
+        return null
+
+    let modeMap = {}
+    let maxEl = array[0], maxCount = 1
+
+    for(let i = 0; i < array.length; i++){
+
+        let el = array[i]
+
+        if(modeMap[el] == null)
+            modeMap[el] = 1
+        else
+            modeMap[el]++
+
+        if(modeMap[el] > maxCount)
+        {
+            maxEl = el
+            maxCount = modeMap[el]
+        }
+
+    }
+
+    return maxEl
+
+   }
+
    /**
     * Prepares and maps an object for the manipulation in the view.
     */
@@ -204,15 +252,16 @@ export class WeatherService {
 
      this.cityForecast.forEach( (day, key) => {
 
-       day.stateName = this.getStateClassname(day.state.display);
-       day.timeIntervalName = this.getTimeIntervalClass(day.timeInterval);
-       day.periodTime = '';
-       day.periodName = '';
-       day.airTemp = day.air.display;
-       day.windSpeedNum = day.windspeed.display;
-       day.windDirectionDeg = day.winddirection.display;
-       day.rainProb = day.rain.display;
-       day.periodHidden = 'slice__data--hidden';
+       day.stateName = this.getStateClassname(day.state.display)
+       day.stateSummary = day.summary.display
+       day.timeIntervalName = this.getTimeIntervalClass(day.timeInterval)
+       day.periodTime = ''
+       day.periodName = ''
+       day.airTemp = day.air.display
+       day.windSpeedNum = day.windspeed.display
+       day.windDirectionDeg = 0
+       day.rainProb = day.rain.display
+       day.periodHidden = 'slice__data--hidden'
        day.units = {
          temperature : '°C',
          speed : 'km/h',
@@ -362,7 +411,11 @@ export class WeatherService {
      const possibilites = this.getIntervalsPossibilities(this.timeIntervals)
      const interval = 24/this.timeIntervals
      const newPeriod = possibilites[indivTimeInterval - 1][period]
-     return newPeriod * interval + ':00 - ' + (newPeriod + 1) * interval + ':00'
+
+     if( ((newPeriod + 1) * interval) === 24 )
+      return newPeriod * interval + ':00 - ' + '00:00'
+     else
+      return newPeriod * interval + ':00 - ' + (newPeriod + 1) * interval + ':00'
 
    }
 

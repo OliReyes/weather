@@ -10,7 +10,7 @@ export class TimezoneService {
   private http: HttpClient
   ){}
 
-  getCityTimeZone(lat: number, lon: number){
+  getCityTimeZone(lat: any, lon: any){
 
     const BASEURL = 'http://api.geonames.org/timezoneJSON'
     const PROXYCORS = 'https://cors-anywhere.herokuapp.com'

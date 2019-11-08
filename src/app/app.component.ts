@@ -120,7 +120,9 @@ export class AppComponent implements OnInit {
 
       this.timezoneService.getCityTimeZone(lat, lon).subscribe( timeZoneItem => {
 
-        let currentTimeZone = new Date(timeZoneItem.time)
+        let timeZoneItemTyped: any = timeZoneItem
+
+        let currentTimeZone = new Date(timeZoneItemTyped.time)
 
         this.weatherService.setCurrentTimeZone(currentTimeZone)
 
@@ -154,6 +156,7 @@ export class AppComponent implements OnInit {
   updateSlice(event, forecastDay, index) {
 
     forecastDay.stateName = this.weatherService.getStateClassname(forecastDay.state.hourly[index])
+    forecastDay.stateSummary = forecastDay.summary.hourly[index]
     forecastDay.periodTime = this.weatherService.getTimePeriod(index, forecastDay.timeInterval)
     forecastDay.periodHidden = ''
     forecastDay.periodName = this.weatherService.getPeriodClassname(index)
@@ -170,12 +173,13 @@ export class AppComponent implements OnInit {
   sliceBackToDisplay(event, forecastDay) {
 
     forecastDay.stateName = this.weatherService.getStateClassname(forecastDay.state.display)
+    forecastDay.stateSummary = forecastDay.summary.display
     forecastDay.periodTime = ''
     forecastDay.periodName = ''
     forecastDay.periodHidden = 'slice__data--hidden'
     forecastDay.airTemp = forecastDay.air.display
     forecastDay.windSpeedNum = forecastDay.windspeed.display
-    forecastDay.windDirectionDeg = forecastDay.winddirection.display
+    forecastDay.windDirectionDeg = 0
     forecastDay.rainProb = forecastDay.rain.display
 
   }
