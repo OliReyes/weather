@@ -358,7 +358,7 @@ main {
 	stroke-width: 0px;
 }
 
-@media screen and (max-width:43.25em) {
+/* @media screen and (max-width:43.25em) {
 	.meteo-header {
 		font-size: 0.85em;
 		padding-bottom: 1em;
@@ -410,6 +410,27 @@ main {
 	.slice__data {
 		font-size: 4vw;
 	}
+} */
+@media screen and (max-width:43.25em) {
+
+	/* Graph content */
+	.content {
+		overflow-y: scroll;
+	}
+
+	.slices{
+		flex-direction: column;
+		height: auto;
+	}
+
+	.slice{
+		width: 100%;
+	}
+
+	.slice__data {
+		font-size: 4vw;
+	}
+
 }
 /*************************
  DEMO

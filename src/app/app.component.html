@@ -107,7 +107,7 @@
     <!-- Section where the forecast information and visuals will be shown. -->
     <div class="slices" *ngIf="cityWeather">
       <!-- Individual day forecast information template shown as a column. -->
-      <div *ngFor="let forecastDay of cityWeather" class="slice" [ngClass]="[forecastDay.stateName, forecastDay.periodName]" (mouseleave)="sliceBackToDisplay($event, forecastDay)">
+      <div *ngFor="let forecastDay of cityWeather" class="slice" [ngClass]="[forecastDay.stateName, forecastDay.periodName]" (pressup)="sliceBackToDisplay($event, forecastDay)" (mouseleave)="sliceBackToDisplay($event, forecastDay)">
         <!-- All possible svg images of sky state ready to use (show). -->
         <div class="wstate-wrap">
           <svg class="wstate wstate--sunny">
@@ -192,7 +192,7 @@
         </span> -->
 
         <div class="slice__hover">
-          <div *ngFor="let interval of getNumberOfIntervals(forecastDay.timeInterval); let i = index" (mouseenter)="updateSlice($event, forecastDay, i)" [ngClass]="forecastDay.timeIntervalName"></div>
+          <div *ngFor="let interval of getNumberOfIntervals(forecastDay.timeInterval); let i = index" (press)="updateSlice($event, forecastDay, i)" (mouseenter)="updateSlice($event, forecastDay, i)" [ngClass]="forecastDay.timeIntervalName"></div>
         </div>
 
       </div>
