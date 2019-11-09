@@ -122,7 +122,7 @@ export class AppComponent implements OnInit {
 
         let timeZoneItemTyped: any = timeZoneItem
 
-        let currentTimeZone = new Date(timeZoneItemTyped.time)
+        let currentTimeZone = new Date(timeZoneItemTyped.time.replace(/\s/, 'T'))
 
         this.weatherService.setCurrentTimeZone(currentTimeZone)
 
